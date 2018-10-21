@@ -2,8 +2,12 @@ $(function () {
 	
 }());
 
-$('.btn').click(function() {	  
-	getBusTimes();	  
+$("#btn1").click(function() {	  
+	getBusTimes(55181,86);	  
+});
+
+$("#btn2").click(function() {	  
+	getBusTimes(55039,86);	  
 });
 
 
@@ -25,18 +29,22 @@ function parseBustime(millis,type) {
 }
 
 
-function getBusTimes(){
-	var busStopId = 55181;
-	var busId=86;
+function getBusTimes(busStopId,busId){
 	$("#pWelcome").remove();
-	$("#pSummary").text(busStopId+"opp.yck | "+busId);
-	$("#pFirst").text('loading . . .');
+	if(busStopId == "55181")
+		$(".pClassSummary").text(busStopId+"opp.yck | "+busId);
+	else if(busStopId == "55039")
+		$(".pClassSummary").text(busStopId+"NcsHub | "+busId);
+	else 
+		$(".pClassSummary").text(busStopId+" | "+busId);
+	
+	$(".pClassDetail").text('Wait lah...!');
 	  
 	  $.ajax({
 		    type:"GET",
 		    url:"https://buddhikasgbustimeproxy.azurewebsites.net/api/bustime/?busStopId="+busStopId+"&busId="+busId,
 		    success: function(data) {		    	
-		      $('#pFirstRow').text(parseBustime(data.FirstBus,data.FirstBusType)+" | "+parseBustime(data.SecondBus,data.SecondBusType) +" | "+parseBustime(data.ThirdBus,data.ThirdBusType));
+		      $('.pClassDetail').text(parseBustime(data.FirstBus,data.FirstBusType)+" | "+parseBustime(data.SecondBus,data.SecondBusType) +" | "+parseBustime(data.ThirdBus,data.ThirdBusType));
 		      //$('#pSecondRow').text(parseBustime(data.ThirdBus));
 		    }
 		  });
